@@ -68,6 +68,24 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     }
   }
 
+    public static void registerLocationNotifChnnl(Context context) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationManager mngr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            if (mngr.getNotificationChannel(NOTIFICATION_CHANNEL_ID) != null) {
+                return;
+            }
+            //
+            NotificationChannel channel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    context.getString(R.string.notifications),
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(context.getString(R.string.notifications));
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            mngr.createNotificationChannel(channel);
+        }
+    }
+
   @Override
   public void onMessageReceived (RemoteMessage message) {
 
@@ -77,8 +95,36 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     Bundle extras = new Bundle();
 
     if (message.getNotification() != null) {
-      extras.putString(TITLE, message.getNotification().getTitle());
-      extras.putString(MESSAGE, message.getNotification().getBody());
+      registerLocationNotifChnnl(this);
+      String title = message.getNotification().getTitle();
+      String message = message.getNotification().getBody();
+      if(title === null) {
+          title = message.getNotification().getTitleLocalizationKey();
+          if(title===null) {
+            title = "CVIng";
+          }
+      }
+      if(message === null) {
+            String bodyKey = notification.getBodyLocalizationKey();
+            String[] bodyArgs = notification.getBodyLocalizationArgs();
+
+            if(!TextUtils.isEmpty(bodyKey) && bodyArgs != null && bodyArgs.length > 1) {
+              message = bodyArgs[0];
+              ArrayList<String> al = new ArrayList<String>();
+              Collection l = Arrays.asList(bodyArgs);
+              al.addAll(l);
+              extras.putStringArrayListExtra("ar", al);
+            }
+
+
+      }
+      if(title !== null) {
+        extras.putString(TITLE, message.getNotification().getTitle());
+      }
+      if(message !== null) {
+        extras.putString(MESSAGE, message.getNotification().getBody());
+      }
+
       extras.putString(SOUND, message.getNotification().getSound());
       extras.putString(ICON, message.getNotification().getIcon());
       extras.putString(COLOR, message.getNotification().getColor());

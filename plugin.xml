@@ -69,14 +69,14 @@
     <framework src="me.leolin:ShortcutBadger:1.1.17@aar"/>
     <framework src="com.google.firebase:firebase-messaging:$FCM_VERSION"/>
 
-    <source-file src="src/android/cofficegroup/FCMService.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/PushConstants.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/PushHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/BackgroundHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/PushInstanceIDListenerService.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/PushPlugin.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/BackgroundActionButtonHandler.java" target-dir="src/com/cofficegroup/"/>
-    <source-file src="src/android/cofficegroup/PushDismissedHandler.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/FCMService.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/PushConstants.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/PushHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/BackgroundHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/PushInstanceIDListenerService.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/PushPlugin.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/BackgroundActionButtonHandler.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/com/cofficegroup/PushDismissedHandler.java" target-dir="src/com/cofficegroup/"/>
   </platform>
 
   <platform name="browser">
