@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.WearableExtender;
 import android.support.v4.app.RemoteInput;
+import android.text.TextUtils;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -42,6 +43,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +55,7 @@ import java.security.SecureRandom;
 public class FCMService extends FirebaseMessagingService implements PushConstants {
 
   private static final String LOG_TAG = "Push_FCMService";
+  public static final String NOTIFICATION_CHANNEL_ID = "cving";
   private static HashMap<Integer, ArrayList<String>> messageMap = new HashMap<Integer, ArrayList<String>>();
 
   public void setNotification (int notId, String message) {
@@ -77,9 +81,9 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
             //
             NotificationChannel channel = new NotificationChannel(
                     NOTIFICATION_CHANNEL_ID,
-                    context.getString(R.string.notifications),
+                    "Notifications",
                     NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription(context.getString(R.string.notifications));
+            channel.setDescription("Notifications");
             channel.enableLights(false);
             channel.enableVibration(false);
             mngr.createNotificationChannel(channel);
@@ -97,32 +101,31 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     if (message.getNotification() != null) {
       registerLocationNotifChnnl(this);
       String title = message.getNotification().getTitle();
-      String message = message.getNotification().getBody();
-      if(title === null) {
-          title = message.getNotification().getTitleLocalizationKey();
-          if(title===null) {
+      String _message = message.getNotification().getBody();
+      if(title == null) {
+          String titleK = message.getNotification().getTitleLocalizationKey();
+          String[] titleA = message.getNotification().getTitleLocalizationArgs();
+          if(!TextUtils.isEmpty(titleK) && titleA != null && titleA.length >= 1) {
+            title = titleA[0];
+          }
+          if(title== null) {
             title = "CVIng";
           }
       }
-      if(message === null) {
-            String bodyKey = notification.getBodyLocalizationKey();
-            String[] bodyArgs = notification.getBodyLocalizationArgs();
+      if(_message == null) {
+            String bodyKey = message.getNotification().getBodyLocalizationKey();
+            String[] bodyArgs = message.getNotification().getBodyLocalizationArgs();
 
-            if(!TextUtils.isEmpty(bodyKey) && bodyArgs != null && bodyArgs.length > 1) {
-              message = bodyArgs[0];
-              ArrayList<String> al = new ArrayList<String>();
-              Collection l = Arrays.asList(bodyArgs);
-              al.addAll(l);
-              extras.putStringArrayListExtra("ar", al);
+            if(!TextUtils.isEmpty(bodyKey) && bodyArgs != null && bodyArgs.length >= 1) {
+              _message = bodyArgs[0];
+              extras.putStringArray(MESSAGEARGS, bodyArgs);
             }
-
-
       }
-      if(title !== null) {
-        extras.putString(TITLE, message.getNotification().getTitle());
+      if(title != null) {
+        extras.putString(TITLE, title);
       }
-      if(message !== null) {
-        extras.putString(MESSAGE, message.getNotification().getBody());
+      if(_message != null) {
+        extras.putString(MESSAGE, _message);
       }
 
       extras.putString(SOUND, message.getNotification().getSound());
