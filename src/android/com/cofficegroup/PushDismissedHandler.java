@@ -1,4 +1,4 @@
-package com.adobe.phonegap.push;
+package com.cofficegroup;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

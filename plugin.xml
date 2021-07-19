@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="@havesource/cordova-plugin-push" version="2.0.1-dev.0">
+  id="@cofficegroup/cordova-plugin-push-cving" version="1.0.0">
 
-  <name>Cordova Push Plugin</name>
+  <name>Cordova Push Plugin CVING</name>
   <description>Enable receiving push notifications on Android, iOS and Windows devices. Android uses Firebase Cloud Messaging. iOS uses Apple APNS Notifications. Windows uses Microsoft WNS Notifications.</description>
 
   <license>MIT</license>
@@ -21,7 +21,7 @@
   <platform name="android">
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="PushNotification">
-        <param name="android-package" value="com.adobe.phonegap.push.PushPlugin"/>
+        <param name="android-package" value="com.cofficegroup.PushPlugin"/>
       </feature>
     </config-file>
 
@@ -33,24 +33,24 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <activity android:name="com.adobe.phonegap.push.PushHandlerActivity" android:exported="true" android:permission="${applicationId}.permission.PushHandlerActivity"/>
-      <activity android:name="com.adobe.phonegap.push.BackgroundHandlerActivity" android:exported="true" android:permission="${applicationId}.permission.BackgroundHandlerActivity">
+      <activity android:name="com.cofficegroup.PushHandlerActivity" android:exported="true" android:permission="${applicationId}.permission.PushHandlerActivity"/>
+      <activity android:name="com.cofficegroup.BackgroundHandlerActivity" android:exported="true" android:permission="${applicationId}.permission.BackgroundHandlerActivity">
         <intent-filter>
-          <action android:name="com.adobe.phonegap.push.background.MESSAGING_EVENT"/>
+          <action android:name="com.cofficegroup.background.MESSAGING_EVENT"/>
           <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
       </activity>
 
-      <receiver android:name="com.adobe.phonegap.push.BackgroundActionButtonHandler"/>
-      <receiver android:name="com.adobe.phonegap.push.PushDismissedHandler"/>
+      <receiver android:name="com.cofficegroup.BackgroundActionButtonHandler"/>
+      <receiver android:name="com.cofficegroup.PushDismissedHandler"/>
 
-      <service android:name="com.adobe.phonegap.push.FCMService">
+      <service android:name="com.cofficegroup.FCMService">
         <intent-filter>
           <action android:name="com.google.firebase.MESSAGING_EVENT"/>
         </intent-filter>
       </service>
 
-      <service android:name="com.adobe.phonegap.push.PushInstanceIDListenerService">
+      <service android:name="com.cofficegroup.PushInstanceIDListenerService">
         <intent-filter>
           <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
         </intent-filter>
@@ -69,14 +69,14 @@
     <framework src="me.leolin:ShortcutBadger:1.1.17@aar"/>
     <framework src="com.google.firebase:firebase-messaging:$FCM_VERSION"/>
 
-    <source-file src="src/android/com/adobe/phonegap/push/FCMService.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/PushConstants.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/PushHandlerActivity.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/BackgroundHandlerActivity.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/PushInstanceIDListenerService.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/PushPlugin.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/BackgroundActionButtonHandler.java" target-dir="src/com/adobe/phonegap/push/"/>
-    <source-file src="src/android/com/adobe/phonegap/push/PushDismissedHandler.java" target-dir="src/com/adobe/phonegap/push/"/>
+    <source-file src="src/android/cofficegroup/FCMService.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/PushConstants.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/PushHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/BackgroundHandlerActivity.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/PushInstanceIDListenerService.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/PushPlugin.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/BackgroundActionButtonHandler.java" target-dir="src/com/cofficegroup/"/>
+    <source-file src="src/android/cofficegroup/PushDismissedHandler.java" target-dir="src/com/cofficegroup/"/>
   </platform>
 
   <platform name="browser">
