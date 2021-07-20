@@ -384,6 +384,7 @@
                        stringByReplacingOccurrencesOfString: @" " withString: @""];
 #endif
 
+    NSLog(@"[Debug]Push Plugin register success(string): %@", token);
 #if !TARGET_IPHONE_SIMULATOR
 
     // Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
