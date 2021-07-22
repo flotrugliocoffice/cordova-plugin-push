@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.WearableExtender;
 import android.support.v4.app.RemoteInput;
+import android.text.TextUtils;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -42,6 +43,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +55,7 @@ import java.security.SecureRandom;
 public class FCMService extends FirebaseMessagingService implements PushConstants {
 
   private static final String LOG_TAG = "Push_FCMService";
+  public static final String NOTIFICATION_CHANNEL_ID = "cving";
   private static HashMap<Integer, ArrayList<String>> messageMap = new HashMap<Integer, ArrayList<String>>();
 
   public void setNotification (int notId, String message) {
@@ -68,6 +72,24 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     }
   }
 
+    public static void registerLocationNotifChnnl(Context context) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationManager mngr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            if (mngr.getNotificationChannel(NOTIFICATION_CHANNEL_ID) != null) {
+                return;
+            }
+            //
+            NotificationChannel channel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    "Notifications",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("Notifications");
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            mngr.createNotificationChannel(channel);
+        }
+    }
+
   @Override
   public void onMessageReceived (RemoteMessage message) {
 
@@ -77,10 +99,39 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
     Bundle extras = new Bundle();
 
     if (message.getNotification() != null) {
-      extras.putString(TITLE, message.getNotification().getTitle());
-      extras.putString(MESSAGE, message.getNotification().getBody());
+      registerLocationNotifChnnl(this);
+      String title = message.getNotification().getTitle();
+      String _message = message.getNotification().getBody();
+      if(title == null) {
+          String titleK = message.getNotification().getTitleLocalizationKey();
+          String[] titleA = message.getNotification().getTitleLocalizationArgs();
+          if(!TextUtils.isEmpty(titleK) && titleA != null && titleA.length >= 1) {
+            title = titleA[0];
+          }
+          if(title== null) {
+            title = "CVIng";
+          }
+      }
+      if(_message == null) {
+            String bodyKey = message.getNotification().getBodyLocalizationKey();
+            String[] bodyArgs = message.getNotification().getBodyLocalizationArgs();
+
+            if(!TextUtils.isEmpty(bodyKey) && bodyArgs != null && bodyArgs.length >= 1) {
+              _message = bodyArgs[0];
+              extras.putStringArray(MESSAGEARGS, bodyArgs);
+            }
+      }
+      if(title != null) {
+        extras.putString(TITLE, title);
+      }
+      if(_message != null) {
+        extras.putString(MESSAGE, _message);
+      }
+
       extras.putString(SOUND, message.getNotification().getSound());
-      extras.putString(ICON, message.getNotification().getIcon());
+      if( message.getNotification().getIcon() != null) {
+        extras.putString(ICON, message.getNotification().getIcon());
+      }
       extras.putString(COLOR, message.getNotification().getColor());
     }
     for (Map.Entry<String, String> entry : message.getData().entrySet()) {
